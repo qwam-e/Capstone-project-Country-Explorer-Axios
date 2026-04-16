@@ -1,0 +1,158 @@
+/* BASE */
+body {
+  margin: 0;
+  font-family: 'Playfair Display', 'Segoe UI', sans-serif;
+  background: radial-gradient(circle at top, #1a1a1a, #0a0a0a);
+  color: #fff;
+}
+
+/* CENTER CONTENT */
+.container {
+  width: 90%;
+  max-width: 1100px;
+  margin: auto;
+  text-align: center;
+}
+
+/* SEARCH BAR */
+.search-container {
+  margin-top: 50px;
+}
+
+form {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  width: 100%;
+  max-width: 900px; /* makes it LONG */
+  margin: auto;
+
+  padding: 12px 20px;
+  border-radius: 50px;
+
+  backdrop-filter: blur(15px);
+  background: rgba(255,255,255,0.07);
+  border: 1px solid rgba(255,255,255,0.15);
+}
+
+input {
+  font-family: "Poppins", sans-serif;
+  flex: 1;
+  background: transparent;
+  border: none;
+  outline: none;
+  color: white;
+  font-size: 18px;
+}
+
+input::placeholder {
+  color: rgba(255,255,255,0.6);
+}
+
+button {
+  background: none;
+  border: none;
+  color: white;
+  font-size: 20px;
+  cursor: pointer;
+}
+
+/* CARD */
+.card {
+  margin-top: 50px;
+}
+
+/* TITLE */
+.card h1 {
+  font-size: 48px;
+  margin-bottom: 20px;
+}
+
+/* FLAG — BIG like your sketch */
+.flag {
+  width: 100%;
+  max-width: 800px;   /* THIS controls how big it gets */
+  height: auto;
+
+  border-radius: 20px;
+  margin: 20px auto;
+  display: block;
+
+  box-shadow: 0 10px 40px rgba(0,0,0,0.6);
+}
+
+/* INFO ROW */
+.info {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 30px;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+
+.info p {
+  font-family: "Poppins", sans-serif;
+  flex: 1;
+  min-width: 150px;
+  color: #ddd;
+  font-size: 16px;
+}
+
+.footer {
+  margin-top: 80px;
+  width: 100%;
+  text-align: center;
+  padding: 20px;
+  font-family: "Poppins", sans-serif;
+  backdrop-filter: blur(10px);
+  background: rgba(255,255,255,0.05);
+  border-top: 1px solid rgba(255,255,255,0.1);
+  color: rgba(255,255,255,0.7);
+}
+
+/* --------------Hover Effect ---------------- */
+
+/* container */
+.flag-container {
+  position: relative;
+  max-width: 800px;
+  margin: auto;
+  border-radius: 20px;
+  overflow: hidden;
+}
+
+/* flag */
+.flag {
+  width: 100%;
+  display: block;
+  border-radius: 20px;
+  transition: all 0.4s ease;
+}
+
+/* symbol (initially invisible) */
+.currency-symbol {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) scale(0.8);
+
+  font-size: 20rem;
+  font-weight: bold;
+  color: white;
+
+  opacity: 0;
+  transition: all 0.4s ease;
+
+  pointer-events: none; /* important */
+}
+
+/* HOVER — everything happens here */
+.flag-container:hover .flag {
+  filter: blur(6px) brightness(0.6);
+}
+
+.flag-container:hover .currency-symbol {
+  opacity: 1;
+  transform: translate(-50%, -50%) scale(1);
+}
