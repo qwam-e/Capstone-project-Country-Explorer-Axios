@@ -4,7 +4,7 @@ import morgan from "morgan";
 import axios from "axios";
 
 const app = express();
-const port = 3000;
+const port = process.env.PORT || 3000;
 
 app.set("view engine", "ejs");
 app.use(express.static("public"));
@@ -22,23 +22,31 @@ app.get("/", async (req, res) => {
             {
                 result: result[Math.floor(Math.random() * result.length)]
             });
-            // console.log(result[0]);
-            // console.log(Object.values(result[0].currencies)[0].symbol);
     }catch(error)  {
         console.error(`GET error: ${error.message}`);
+        res.render("index", { error: "Country not found. Please try again." });
     }
 });
 
 app.post("/", async (req, res) => {
+    
     try {
-        const { data: result } = await axios.get(`${API_URL}/name/${req.body.country}`);
+        const countryName =  req.body.country ? req.body.country.trim() : "";
+
+        const { data: result } = await axios.get(`${API_URL}/name/${countryName}`);
         // console.log(result[0]);
         res.render("index", 
             {
                 result: result[0]
             })
     }catch (error) {
-        console.error(`POST error: ${error.message}`);  
+        console.error(`POST error: ${error.message}`);
+        if (error.response && error.response.status === 404) {
+            return res.render("index", {
+                result: null, 
+                error: `Country not found. Please try again.`
+            });
+        }
     }
 });
 

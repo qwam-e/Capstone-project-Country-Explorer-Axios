@@ -1,5 +1,9 @@
 /* BASE */
 body {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+
   margin: 0;
   font-family: 'Playfair Display', 'Segoe UI', sans-serif;
   background: radial-gradient(circle at top, #1a1a1a, #0a0a0a);
@@ -12,6 +16,7 @@ body {
   max-width: 1100px;
   margin: auto;
   text-align: center;
+  flex: 1;
 }
 
 /* SEARCH BAR */
@@ -155,4 +160,9 @@ button {
 .flag-container:hover .currency-symbol {
   opacity: 1;
   transform: translate(-50%, -50%) scale(1);
+}
+
+.error {
+  font-size: 6rem;
+  margin-top: 30px;
 }

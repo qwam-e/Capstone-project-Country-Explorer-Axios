@@ -46,6 +46,8 @@
           <p><strong>Region:</strong> <%= result.region %></p>
         </div>
       </div>
+    <% } else if(!result) { %>
+      <p class="error"><%= error %><br>😤😮‍💨</p>
     <% } %>
 
   </div>
@@ -53,8 +55,6 @@
   <footer class="footer">
     <p>© <%= new Date().getFullYear() %> Country Explorer | sheyshey.io | picsack.gh</p>
   </footer>
-
-</body>
 
 </body>
 </html>
