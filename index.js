@@ -17,10 +17,12 @@ const API_URL = "https://restcountries.com/v3.1";
 
 app.get("/", async (req, res) => {
     try {
+        
         const { data: result } = await axios.get(`${API_URL}/all?fields=name,flags,capital,region,population,currencies`);
+
         res.render("index", 
             {
-                result: result[Math.floor(Math.random() * result.length)]
+                result: result[Math.floor(Math.random() * result.length)],
             });
     }catch(error)  {
         console.error(`GET error: ${error.message}`);
@@ -31,10 +33,11 @@ app.get("/", async (req, res) => {
 app.post("/", async (req, res) => {
     
     try {
+        const carousel = [];
         const countryName =  req.body.country ? req.body.country.trim() : "";
 
         const { data: result } = await axios.get(`${API_URL}/name/${countryName}`);
-        // console.log(result[0]);
+        // console.log(result);
         res.render("index", 
             {
                 result: result[0]
@@ -50,5 +53,29 @@ app.post("/", async (req, res) => {
     }
 });
 
+app.get("/api/countries", async (req, res) => {
+  try {
+    const { data } = await axios.get(
+      `${API_URL}/all?fields=name,flags,capital,region,population,currencies`
+    );
+
+    const countries = data
+      .sort(() => 0.5 - Math.random())
+      .slice(0, 15)
+      .map(c => ({
+        name: c.name.common,
+        flag: c.flags.svg,
+        capital: c.capital?.[0] || "N/A",
+        population: c.population,
+        currency: Object.values(c.currencies || {})[0]?.name || "N/A",
+        symbol: Object.values(c.currencies || {})[0]?.symbol || "?",
+        region: c.region
+      }));
+
+    res.json(countries);
+  } catch (err) {
+    res.status(500).json({ error: "Failed to fetch countries" });
+  }
+});
 
 app.listen(port, console.log(`Server running on http://localhost:${port}`));

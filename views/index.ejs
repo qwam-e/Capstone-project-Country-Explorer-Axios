@@ -26,27 +26,28 @@
     <% if (result) { %>
       <div class="flag-container">
         <div class="card">
-          <h1><%= result.name.common %></h1>
+          <h1 id="country-name"><%= result.name.common %></h1>
   
-          <img 
+          <img
+            id="flag"
             src="<%= result.flags.svg %>" 
             alt="<%= result.flags.alt %>"
             class="flag"
           >
 
-    <span class="currency-symbol">
+    <span id="currency-symbol" class="currency-symbol">
       <%= Object.values(result.currencies || {})[0]?.symbol || "?" %>
     </span>
       </div>
 
         <div class="info">
-          <p><strong>Capital:</strong> <%= result.capital?.[0] %></p>
-          <p><strong>Population:</strong> <%= result.population ? result.population.toLocaleString() : "N/A"%></p>
-          <p><strong>Currency:</strong> <%= Object.values(result.currencies || {})[0]?.name || "N/A" %></p>
-          <p><strong>Region:</strong> <%= result.region %></p>
+          <p><strong>Capital:</strong> <span id="capital"><%= result.capital?.[0] %></span> </p>
+          <p><strong>Population:</strong> <span id="population"><%= result.population ? result.population.toLocaleString() : "N/A"%></span> </p>
+          <p><strong>Currency:</strong> <span id="currency"><%= Object.values(result.currencies || {})[0]?.name || "N/A" %></span> </p>
+          <p><strong>Region:</strong> <span id="region"><%= result.region %></span> </p>
         </div>
       </div>
-    <% } else if(!result) { %>
+    <% } else { %>
       <p class="error"><%= error %><br>😤😮‍💨</p>
     <% } %>
 
@@ -56,5 +57,42 @@
     <p>© <%= new Date().getFullYear() %> Country Explorer | sheyshey.io | picsack.gh</p>
   </footer>
 
+  <script>
+    async function loadCarousel() {
+    try {
+      const res = await fetch("/api/countries");
+      const countries = await res.json();
+
+      if (!countries.length) return;
+
+      let index = 0;
+
+      function updateUI(country) {
+        document.getElementById("country-name").textContent = country.name;
+        document.getElementById("flag").src = country.flag;
+        document.getElementById("capital").textContent = country.capital;
+        document.getElementById("population").textContent = country.population.toLocaleString();
+        document.getElementById("currency").textContent = country.currency;
+        document.getElementById("currency-symbol").textContent = country.symbol;
+        document.getElementById("region").textContent = country.region;
+      }
+
+      // show first instantly
+      updateUI(countries[0]);
+
+      // rotate every 3 seconds
+      setInterval(() => {
+        index = (index + 1) % countries.length;
+        updateUI(countries[index]);
+      }, 8000);
+
+    } catch (err) {
+      console.error("AJAX error:", err);
+    }
+  }
+
+  
+  loadCarousel();
+  </script>
 </body>
 </html>
