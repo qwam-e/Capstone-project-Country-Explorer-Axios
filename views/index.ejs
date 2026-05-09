@@ -91,8 +91,13 @@
     }
   }
 
-  
   loadCarousel();
+
+    const hasResult = "<%= !!result %>" === "true";
+
+  if (!hasResult) {
+    loadCarousel();
+  }
   </script>
 </body>
 </html>
