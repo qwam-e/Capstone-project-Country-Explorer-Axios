@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
+  <head>
+    <meta charset="UTF-8">
   <title>Country Explorer</title>
   <link rel="stylesheet" href="/styles/main.css">
   <link rel="icon" type="image/x-icon" href="/images/favcon.ico">
@@ -22,33 +22,33 @@
         <button type="submit">↩</button>
       </form>
     </div>
-
-    <% if (result) { %>
-      <div class="flag-container">
-        <div class="card">
-          <h1 id="country-name"><%= result.name.common %></h1>
-  
-          <img
-            id="flag"
-            src="<%= result.flags.svg %>" 
-            alt="<%= result.flags.alt %>"
-            class="flag"
-          >
-
-    <span id="currency-symbol" class="currency-symbol">
-      <%= Object.values(result.currencies || {})[0]?.symbol || "?" %>
-    </span>
-      </div>
-
-        <div class="info">
-          <p><strong>Capital:</strong> <span id="capital"><%= result.capital?.[0] %></span> </p>
-          <p><strong>Population:</strong> <span id="population"><%= result.population ? result.population.toLocaleString() : "N/A"%></span> </p>
-          <p><strong>Currency:</strong> <span id="currency"><%= Object.values(result.currencies || {})[0]?.name || "N/A" %></span> </p>
-          <p><strong>Region:</strong> <span id="region"><%= result.region %></span> </p>
-        </div>
-      </div>
-    <% } else { %>
+    
+    <% if (!result || error ) { %>
       <p class="error"><%= error %><br>😤😮‍💨</p>
+      <% } else { %>
+        <div class="flag-container">
+          <div class="card">
+            <h1 id="country-name"><%= result.name.common %></h1>
+    
+            <img
+              id="flag"
+              src="<%= result.flags.svg %>" 
+              alt="<%= result.flags.alt %>"
+              class="flag"
+            >
+  
+      <span id="currency-symbol" class="currency-symbol">
+        <%= Object.values(result.currencies || {})[0]?.symbol || "?" %>
+      </span>
+        </div>
+  
+          <div class="info">
+            <p><strong>Capital:</strong> <span id="capital"><%= result.capital?.[0] %></span> </p>
+            <p><strong>Population:</strong> <span id="population"><%= result.population ? result.population.toLocaleString() : "N/A"%></span> </p>
+            <p><strong>Currency:</strong> <span id="currency"><%= Object.values(result.currencies || {})[0]?.name || "N/A" %></span> </p>
+            <p><strong>Region:</strong> <span id="region"><%= result.region %></span> </p>
+          </div>
+        </div>
     <% } %>
 
   </div>

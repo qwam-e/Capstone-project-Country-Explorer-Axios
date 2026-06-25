@@ -23,10 +23,15 @@ app.get("/", async (req, res) => {
         res.render("index", 
             {
                 result: result[Math.floor(Math.random() * result.length)],
+                error: `Country not found. Please try again.`
             });
-    }catch(error)  {
-        console.error(`GET error: ${error.message}`);
-        res.render("index", { error: "Country not found. Please try again." });
+    } catch(error)  {
+        console.error(`Failed to make request: ${error.message}`);  
+        res.render("index", 
+            {
+                error: `Country not found. Please try again.`,
+                result: null
+            });
     }
 });
 
@@ -40,10 +45,11 @@ app.post("/", async (req, res) => {
         // console.log(result);
         res.render("index", 
             {
-                result: result[0]
-            })
+                result: result[0],
+                error: null
+            });
     }catch (error) {
-        console.error(`POST error: ${error.message}`);
+        console.error(`Failed to make request: ${error.message}`);
         if (error.response && error.response.status === 404) {
             return res.render("index", {
                 result: null, 
@@ -73,7 +79,7 @@ app.get("/api/countries", async (req, res) => {
       }));
 
     res.json(countries);
-  } catch (err) {
+  } catch (error) {
     res.status(500).json({ error: "Failed to fetch countries" });
   }
 });
