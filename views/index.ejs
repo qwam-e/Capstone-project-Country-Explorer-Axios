@@ -12,7 +12,7 @@
 
     <!-- SEARCH -->
     <div class="search-container">
-      <form action="/" method="POST">
+      <form action="/search" method="POST">
         <input 
           type="text" 
           name="country" 
@@ -23,30 +23,62 @@
       </form>
     </div>
     
-    <% if (!result || error ) { %>
+    <% if (!result) { %>
       <p class="error"><%= error %><br>😤😮‍💨</p>
       <% } else { %>
         <div class="flag-container">
           <div class="card">
-            <h1 id="country-name"><%= result.name.common %></h1>
+            <h1 id="country-name">
+              <%= result ? result.names.official : "Loading...🏃🏿‍➡️" %>
+            </h1>
     
             <img
               id="flag"
-              src="<%= result.flags.svg %>" 
-              alt="<%= result.flags.alt %>"
+              src="<%= result.flag.url_svg %>" 
+              alt="<%= result.flag.description %>"
               class="flag"
             >
   
       <span id="currency-symbol" class="currency-symbol">
-        <%= Object.values(result.currencies || {})[0]?.symbol || "?" %>
+        <%= result 
+        ? Object.values(result.currencies || {})[0]?.symbol || "?" 
+        : "?😱"
+        %>
       </span>
         </div>
   
           <div class="info">
-            <p><strong>Capital:</strong> <span id="capital"><%= result.capital?.[0] %></span> </p>
-            <p><strong>Population:</strong> <span id="population"><%= result.population ? result.population.toLocaleString() : "N/A"%></span> </p>
-            <p><strong>Currency:</strong> <span id="currency"><%= Object.values(result.currencies || {})[0]?.name || "N/A" %></span> </p>
-            <p><strong>Region:</strong> <span id="region"><%= result.region %></span> </p>
+            <p>
+              <strong>Capital:</strong>
+               <span id="capital">
+                <%= result ? result.capitals?.[0].name : "Loading...🏃🏿‍➡️" %>
+              </span>
+           </p>
+
+            <p>
+              <strong>Population:</strong>
+               <span id="population">
+                <%= result 
+                ? result.population ? result.population.toLocaleString() : "N/A" 
+                : "Loading...🏃🏿‍➡️"%>
+              </span>
+           </p>
+
+            <p>
+              <strong>Currency:</strong>
+               <span id="currency">
+                <%= result 
+                ? Object.values(result.currencies || {})[0]?.name || "N/A" 
+                : "Lading...🏃🏿‍➡️"%>
+              </span> 
+            </p>
+
+            <p>
+              <strong>Region:</strong>
+               <span id="region">
+                <%= result ? result.region : "Loading...🏃🏿‍➡️" %>
+              </span> 
+            </p>
           </div>
         </div>
     <% } %>
@@ -84,18 +116,17 @@
       setInterval(() => {
         index = (index + 1) % countries.length;
         updateUI(countries[index]);
-      }, 8000);
+      }, 5000);
 
     } catch (err) {
       console.error("AJAX error:", err);
     }
   }
+    const hasResult = <%= !!result %>;
 
-  loadCarousel();
-
-    const hasResult = "<%= !!result %>" === "true";
-
-  if (!hasResult) {
+  if (hasResult) {
+    setTimeout(loadCarousel, 4000);
+  } else {
     loadCarousel();
   }
   </script>
